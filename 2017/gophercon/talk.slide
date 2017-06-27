@@ -1,0 +1,16 @@
+Simple Plugin Architectures in Go
+
+15 July, 2017
+Tags: golang, gophercon2017, plugins
+
+Bob Argenbright
+Security Engineer, Heroku
+bob@heroku.com
+https://about.me/byt3smith
+@byt3smith
+
+* Overview
+
+- golang.org/pkg/plugin
+- go-plugin by HashiCorp
+- net/http?
