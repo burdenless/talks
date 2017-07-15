@@ -1,16 +1,133 @@
 Simple Plugin Architectures in Go
 
-15 July, 2017
+July 2017
 Tags: golang, gophercon2017, plugins
 
 Bob Argenbright
 Security Engineer, Heroku
 bob@heroku.com
-https://about.me/byt3smith
 @byt3smith
 
-* Overview
+* Why Plugins
+- Extensibility
+- Simplicity
+- Reliability
+- Approachability
 
-- golang.org/pkg/plugin
-- go-plugin by HashiCorp
-- net/http?
+* Plugin Requirements
+1. Load/Unload
+2. Run/Stop
+3. Handle errors
+
+* Complexity
+
+* Single Process
+.image img/single-process.png
+
+* Multi Process
+.image img/multi.png
+
+* Architectures
+
+* pkg/plugin
+- Standalone
+- Compiled
+- Introduced in go1.8
+
+Compile as plugin
+
+  go build -buildmode=plugin
+
+*NOTE:* Currently pkg/plugin only works on Linux.
+
+* pkg/plugin: Example
+
+Sample Plugin
+.code hello.go
+
+Open the compiled plugin
+
+  p, _ := plugin.Open("./plugin.so")
+
+Uses a Lookup() to retrieve symbols
+
+  hello, _ := p.Lookup("Hello")
+
+* RPC
+- Distributed
+- Requires client / listener
+- Local or remote
+- Language agnostic
+
+* RPC: Examples
+- [[https://github.com/hashicorp/go-plugin/tree/master/examples/basic][Go-plugin]]
+- [[https://github.com/natefinch/pie/tree/master/examples][Pie]]
+
+* Traditional
+- Standalone
+- Simple
+- Follows the design of stdlib packages
+
+* Traditional: Example
+
+_Any_object_that_implements_Handler_can_serve_HTTP_requests._
+
+.code traditional.go /START OMIT/,/END OMIT/
+
+
+* Goroutines
+- Standalone (kind of)
+- Reliable
+- Communicate with channels
+
+*DISCLAIMER*: This architecture is not the best use of goroutines
+
+* Goroutines: Example
+.code goroutines.go /START OMIT/,/END OMIT/
+
+* Goroutines: Example (continued)
+.play goroutines.go /START FOMIT/,/END FOMIT/
+
+* Unpleasant Options
+- Embedded scripts
+- Config files
+
+* How We Do It
+
+* The Traditionalist
+- Create the plugin contract (interface)
+
+  type Plugin interface {
+    Run(string) error
+    Register()
+  }
+
+* The Traditionalist (continued)
+.play interfaces.go /START OMIT/,/END OMIT/
+
+* The Traditionalist (continued)
+*Pros*
+
+- Approachable
+- Single Process
+
+*Cons*
+
+- Restrictive
+
+* Recommendations
+Take them with a grain of salt
+
+✅ Pkg/plugin
+✅ RPC
+✅ Traditional
+⚠️ Goroutines
+❌ Embedded scripts
+❌ Config files
+
+* References
+- [[https://golang.org/pkg/plugin/]]
+- Pie toolkit for creating Go plugins [[https://github.com/natefinch/pie]]
+- HashiCorp go-plugin talk: [[https://www.youtube.com/watch?v=SRvm3zQQc1Q]]
+- AppliedGo - Plugins in Go: [[https://appliedgo.net/plugins/]]
+- micro: microservice toolkit [[https://github.com/micro/micro/tree/master/plugin]]
