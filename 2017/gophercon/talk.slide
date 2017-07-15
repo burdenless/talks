@@ -30,7 +30,7 @@ bob@heroku.com
 * Architectures
 
 * pkg/plugin
-- Standalone
+- Single process
 - Compiled
 - Introduced in go1.8
 
@@ -54,7 +54,7 @@ Uses a Lookup() to retrieve symbols
   hello, _ := p.Lookup("Hello")
 
 * RPC
-- Distributed
+- Multi process
 - Requires client / listener
 - Local or remote
 - Language agnostic
@@ -64,7 +64,7 @@ Uses a Lookup() to retrieve symbols
 - [[https://github.com/natefinch/pie/tree/master/examples][Pie]]
 
 * Traditional
-- Standalone
+- Single process
 - Simple
 - Follows the design of stdlib packages
 
@@ -76,9 +76,9 @@ _Any_object_that_implements_Handler_can_serve_HTTP_requests._
 
 
 * Goroutines
-- Standalone (kind of)
+- Single process
 - Reliable
-- Communicate with channels
+- Communicate using channels
 
 *DISCLAIMER*: This architecture is not the best use of goroutines
 
@@ -88,7 +88,7 @@ _Any_object_that_implements_Handler_can_serve_HTTP_requests._
 * Goroutines: Example (continued)
 .play goroutines.go /START FOMIT/,/END FOMIT/
 
-* Unpleasant Options
+* Other Options
 - Embedded scripts
 - Config files
 
@@ -109,14 +109,14 @@ _Any_object_that_implements_Handler_can_serve_HTTP_requests._
 *Pros*
 
 - Approachable
-- Single Process
+- Follows stdlib
 
 *Cons*
 
 - Restrictive
 
 * Recommendations
-Take them with a grain of salt
+_Take_them_with_a_grain_of_salt_
 
 ✅ Pkg/plugin
 ✅ RPC
